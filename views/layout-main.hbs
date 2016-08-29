@@ -7,13 +7,7 @@
   <body>
     <h1><a href="/">When President...</a></h1>
     <nav>
-      {{#if user}}
-      <img src="{{user.t_photo_url}}" alt="{{user.name}}" />
-      Welcome, {{user.name}}!
-      <a href="/logout">Sign out</a>
-      {{else}}
-      <a href="/login/twitter">Sign in</a>
-      {{/if}}
+      <a href='/candidates'>Candidates from Backend</a>
     </nav>
     {{{body}}}
   </body>

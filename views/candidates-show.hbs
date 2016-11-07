@@ -1,5 +1,15 @@
-{{#if candidate}}
-<h2>{{candidate.name}} for President in {{candidate.year}}!</h2>
+{{#unless candidate}}
+  <h2>That candidate couldn't be found!</h2>
 {{else}}
-<h2>That candidate couldn't be found!</h2>
-{{/if}}
+  <h2>{{candidate.name}} for President in {{candidate.year}}!</h2>
+
+  <form action="/candidates/{{candidate.name}}/delete" method="post">
+    <button type="submit">Delete this Dude</button>
+  </form>
+
+  <form action="/candidates/{{candidate.name}}" method="post">
+    <input type="text" name="candidate[name]" value="{{candidate.name}}" placeholder="Name">
+    <input type="number" name="candidate[year]" value="{{candidate.year}}" placeholder="Year">
+    <button type="submit">Edit this Dude</button>
+  </form>
+{{/unless}}

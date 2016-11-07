@@ -1,8 +1,9 @@
-var express = require("express");
-var hbs     = require("express-handlebars");
-var db      = require("./db/connection");
+var express       = require("express");
+var hbs           = require("express-handlebars");
+var mongoose      = require("./db/connection").mongoose;
+var Candidate     = mongoose.model("Candidate");
 
-var app     = express();
+var app           = express();
 
 app.set("port", process.env.PORT || 3001);
 app.set("view engine", "hbs");
@@ -19,22 +20,25 @@ app.get("/", function(req, res){
 });
 
 app.get("/candidates", function(req, res){
-  res.render("candidates-index", {
-    candidates: db.candidates
-  });
+  Candidate.find({}).then(candidates => {
+    res.render("candidates-index",{
+      candidates: candidates,
+      // or
+      // candidates
+    })
+  })
+
 });
 
 app.get("/candidates/:name", function(req, res){
-  var desiredName = req.params.name;
-  var candidateOutput;
-  db.candidates.forEach(function(candidate){
-    if(desiredName === candidate.name){
-      candidateOutput = candidate;
-    }
-  });
-  res.render("candidates-show", {
-    candidate: candidateOutput
-  });
+  //findOne will find just one, find will return everything with the criteria
+  Candidate.findOne({name: req.params.name}).then( candidate => {
+    res.render("candidates-show", {
+      candidate: candidate,
+      // or
+      // candidate
+    })
+  })
 });
 
 app.listen(app.get("port"), function(){
